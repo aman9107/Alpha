@@ -112,12 +112,13 @@ export default class Client extends Discord.Client<true> {
           "Command does not have a valid 'execute' function",
           { cause }
         );
-      if ("data" in command) {
-        if (typeof command.data.name !== "string")
-          throw new TypeError("Command name is not a string", { cause });
-        command.category = category;
+      command.category = category;
+      if (
+        "data" in command &&
+        command.data instanceof Discord.SlashCommandBuilder
+      )
         this.commands.slash.set(command.data.name, command);
-      } else if ("name" in command) {
+      else if ("name" in command) {
         if (typeof command.name !== "string")
           throw new TypeError("Command name is not a string", { cause });
         if (Array.isArray(command.aliases))
@@ -178,7 +179,6 @@ export default class Client extends Discord.Client<true> {
             check_subcommands(command.subcommands);
           }
         }
-        command.category = category;
         this.commands.text.set(command.name, command);
       } else throw new Error("Unsupported command type", { cause });
     };
