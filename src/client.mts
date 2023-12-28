@@ -3,22 +3,25 @@ import * as config from "./util/config.mjs";
 import * as helper from "./util/helper.mjs";
 import { readdirSync, statSync } from "node:fs";
 
+type Subcommand = Omit<TextCommand, "category" | "execute">;
+
+type Permission = Discord.PermissionFlags[keyof Discord.PermissionFlags];
+
+interface Permissions {
+  client?: Permission[];
+  member?: Permission[];
+}
+
 type Interaction = (
   client: Client,
   interaction: Discord.Interaction
 ) => Promise<void>;
 
-type Subcommand = Omit<TextCommand, "category" | "execute">;
-
-interface Permissions {
-  client?: bigint[];
-  member?: bigint[];
-}
-
 interface SlashCommand {
   data: Discord.SlashCommandBuilder;
   owner?: boolean;
   category: string;
+  autocomplete?: Interaction;
   execute: Interaction;
 }
 
@@ -42,6 +45,7 @@ export type {
   Client,
   Interaction,
   Subcommand,
+  Permission,
   Permissions,
   SlashCommand,
   TextCommand,
