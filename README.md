@@ -43,7 +43,7 @@ For example:
 Any other folder nested underneath these folders by the same name ('on' or 'once') is not ideal and might cause unintended behaviour.
 
 <blockquote>
-Browse through files to explore sample events, commands, and interactions.
+Browse files to explore sample events, commands, and interactions.
 </blockquote>
 
 #### Utility
