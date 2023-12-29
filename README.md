@@ -42,6 +42,10 @@ For example:
 
 Any other folder nested underneath these folders by the same name ('on' or 'once') is not ideal and might cause unintended behaviour.
 
+<blockquote>
+Browse through files to explore sample events, commands, and interactions.
+</blockquote>
+
 #### Utility
 
 I've added some basic util for queueing/paging, timing/evaluating dates/timestamps, and formatting code; but you can have your own.
@@ -65,3 +69,23 @@ Choosing a database and how it should be sharded is also very specific to the de
 ## Configuration
 
 This project is available in typescript (src) and javascript (lib), which can both be configured from their respective `util` folders.
+
+## Showcase
+
+### Interaction
+
+<img src='./img/img_0.png'/>
+<img src='./img/img_1.png'/>
+
+### Category
+
+<img src='./img/img_2.png'/>
+
+### Command
+
+<img src='./img/img_3.png'/>
+
+### Subcommand
+
+<img src='./img/img_4.png'/>
+<img src='./img/img_5.png'>
