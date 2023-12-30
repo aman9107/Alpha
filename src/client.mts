@@ -187,18 +187,18 @@ export default class Client extends Discord.Client<true> {
       } else throw new Error("Unsupported command type", { cause });
     };
 
-    await (async function loadCommands(
+    const loadCommands = async (
       path = "./commands",
       category = "Miscellaneous"
-    ) {
+    ) => {
       const items = readdirSync(path);
       for (const item of items) {
         const dir = `${path}/${item}`;
-        if (item.endsWith("js") && statSync(dir).isFile())
-          await setCommand(dir, category);
-        else await loadCommands(dir, item);
+        if (statSync(dir).isDirectory()) await loadCommands(dir, item);
+        else if (item.endsWith("js")) await setCommand(dir, category);
       }
-    })();
+    };
+    await loadCommands();
 
     const setInteraction = async (path: string) => {
       const interaction = (await import(path)).default as Interaction;
@@ -212,15 +212,15 @@ export default class Client extends Discord.Client<true> {
       this.interactions.set(path.split("/").pop()!.split(".")[0], interaction);
     };
 
-    await (async function loadInteractions(path = "./interactions") {
+    const loadInteractions = async (path = "./interactions") => {
       const items = readdirSync(path);
       for (const item of items) {
         const dir = `${path}/${item}`;
-        if (item.endsWith("js") && statSync(dir).isFile())
-          await setInteraction(dir);
-        else await loadInteractions(dir);
+        if (statSync(dir).isDirectory()) await loadInteractions(dir);
+        else if (item.endsWith("js")) await setInteraction(dir);
       }
-    })();
+    };
+    await loadInteractions();
 
     const setEvent = async (path: string) => {
       const event = (await import(path)).default;
@@ -240,14 +240,15 @@ export default class Client extends Discord.Client<true> {
       );
     };
 
-    await (async function loadEvents(path = "./events") {
+    const loadEvents = async (path = "./events") => {
       const items = readdirSync(path);
       for (const item of items) {
         const dir = `${path}/${item}`;
-        if (item.endsWith("js") && statSync(dir).isFile()) await setEvent(dir);
-        else await loadEvents(dir);
+        if (statSync(dir).isDirectory()) await loadEvents(dir);
+        else if (item.endsWith("js")) await setEvent(dir);
       }
-    })();
+    };
+    await loadEvents();
 
     await this.login(config.token);
     delete (this.config as any).token;
